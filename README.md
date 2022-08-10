@@ -1,7 +1,10 @@
 # Genymotion SaaS install gmsaas cli
 
-This step installs gmsaas cli, it allaows user to rule all your virtual devices hosted in Genymotion SaaS solution without opening an Internet browser.
+This step installs gmsaas, a command line interface to rule all your virtual devices hosted in [Genymotion SaaS](https://cloud.geny.io/?&utm_source=web-referral&utm_medium=github&utm_campaign=bitrise&utm_content=signup) solution without opening an Internet browser. It can be useful to use this step rather than the [Start](https://github.com/Genymobile/bitrise-step-genymotion-cloud-saas-start) and [Stop](https://github.com/genymobile/bitrise-step-genymotion-cloud-saas-stop.git) Genymotion Cloud SaaS android devices steps if using an integration which already handles the start and stop of the devices (e. g [detox](https://medium.com/genymobile/scale-your-e2e-react-native-ui-testing-with-detox-on-genymotion-cloud-android-virtual-devices-b3effbc7eccc))
 
+## Prerequisite
+
+Go to  [Genymotion Cloud SaaS](https://cloud.geny.io/?&utm_source=web-referral&utm_medium=github&utm_campaign=bitrise&utm_content=signup) and create an account
 
 ## How to use this Step
 
