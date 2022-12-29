@@ -60,7 +60,7 @@ deps:
 
 toolkit:
   go:
-    package_name: github.com/thomascarpentier/bitrise-step-genymotion-saas-install-gmsaas-cli
+    package_name: github.com/genymobile/bitrise-step-genymotion-saas-install-gmsaas-cli
 
 
 inputs:

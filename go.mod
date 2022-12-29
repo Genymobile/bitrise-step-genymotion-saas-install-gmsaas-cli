@@ -1,4 +1,4 @@
-module github.com/thomascarpentier/bitrise-step-genymotion-saas-install-gmsaas-cli
+module github.com/genymobile/bitrise-step-genymotion-saas-install-gmsaas-cli
 
 go 1.18
 
