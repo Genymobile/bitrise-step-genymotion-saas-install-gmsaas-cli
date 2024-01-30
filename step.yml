@@ -13,9 +13,9 @@ summary: |
   Install gmsaas,  command line interface to rule all your virtual devices hosted in Genymotion SaaS solution.
 description: |
   This step installs gmsaas cli, it allaows user to rule all your virtual devices hosted in Genymotion SaaS solution without opening an Internet browser.
-website: https://github.com/thomascarpentier/bitrise-step-genymotion-saas-install-gmsaas-cli
-source_code_url: https://github.com/thomascarpentier/bitrise-step-genymotion-saas-install-gmsaas-cli
-support_url: https://github.com/thomascarpentier/bitrise-step-genymotion-saas-install-gmsaas-cli/issues
+website: https://github.com/genymobile/bitrise-step-genymotion-saas-install-gmsaas-cli
+source_code_url: https://github.com/genymobile/bitrise-step-genymotion-saas-install-gmsaas-cli
+support_url: https://github.com/genymobile/bitrise-step-genymotion-saas-install-gmsaas-cli/issues
 host_os_tags:
   - osx-10.10
   - ubuntu-16.04
@@ -78,5 +78,13 @@ inputs:
       summary: ""
       description: |-
         Password of your Genymotion Cloud SaaS account.
-      is_required: true
       is_sensitive: true
+      is_required: true
+
+  - gmsaas_version: "1.9.0"
+    opts:
+        title: gmsaas version
+        summary: ""
+        description: |-
+          Install a specific version of gmsaas, per default it will install the latest gmsaas compatible : 1.9.0
+
