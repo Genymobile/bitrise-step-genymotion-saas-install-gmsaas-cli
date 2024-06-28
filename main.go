@@ -16,9 +16,10 @@ var isError bool = false
 
 // Config ...
 type Config struct {
-	GMCloudSaaSEmail    string          `env:"email,required"`
-	GMCloudSaaSPassword stepconf.Secret `env:"password,required"`
-	GMCloudSaaSGmsaasVersion    string  `env:"gmsaas_version"`
+	GMCloudSaaSEmail         string          `env:"email"`
+	GMCloudSaaSPassword      stepconf.Secret `env:"password"`
+	GMCloudSaaSGmsaasVersion string          `env:"gmsaas_version"`
+	GMCloudSaaSAPIToken      stepconf.Secret `env:"api_token"`
 }
 
 // install gmsaas if not installed.
@@ -29,14 +30,17 @@ func ensureGMSAASisInstalled(version string) error {
 
 		var installCmd *exec.Cmd
 		if version != "" {
-			installCmd = exec.Command("pip3", "install", "gmsaas=="+version)
+			installCmd = exec.Command("pip3", "install", "gmsaas=="+version, "--break-system-packages")
 		} else {
-			installCmd = exec.Command("pip3", "install", "gmsaas")
+			installCmd = exec.Command("pip3", "install", "gmsaas", "--break-system-packages")
 		}
 
 		if out, err := installCmd.CombinedOutput(); err != nil {
 			return fmt.Errorf("%s failed, error: %s | output: %s", installCmd.Args, err, out)
 		}
+
+		// Execute asdf reshim to update PATH
+		exec.Command("asdf", "reshim", "python").CombinedOutput()
 
 		if version != "" {
 			log.Infof("gmsaas %s has been installed.", version)
@@ -88,13 +92,24 @@ func configureAndroidSDKPath() {
 	}
 }
 
-func login(username, password string) {
+func login(api_token, username, password string) {
 	log.Infof("Login Genymotion Account")
-	cmd := command.New("gmsaas", "auth", "login", username, password)
-	out, err := cmd.RunAndReturnTrimmedCombinedOutput()
-	if err != nil {
-		abortf("Failed to log with gmsaas, error: error: %s | output: %s", cmd.PrintableCommandArgs(), err, out)
+
+	var cmd *exec.Cmd
+	if api_token != "" {
+		cmd = exec.Command("gmsaas", "auth", "token", api_token)
+	} else if username != "" && password != "" {
+		cmd = exec.Command("gmsaas", "auth", "login", username, password)
+	} else {
+		abortf("Invalid arguments. Must provide either a token or both email and password.")
+		return
 	}
+
+	if out, err := cmd.CombinedOutput(); err != nil {
+		abortf("Failed to login with gmsaas, error: error: %s | output: %s", cmd.Args, err, out)
+		return
+	}
+
 	log.Infof("Logged to Genymotion Cloud SaaS platform")
 }
 
@@ -115,7 +130,11 @@ func main() {
 		printError("Failed to export %s, error: %v", "GMSAAS_USER_AGENT_EXTRA_DATA", err)
 	}
 
-	login(c.GMCloudSaaSEmail, string(c.GMCloudSaaSPassword))
+	if c.GMCloudSaaSAPIToken != "" {
+		login(string(c.GMCloudSaaSAPIToken), "", "")
+	} else {
+		login("", c.GMCloudSaaSEmail, string(c.GMCloudSaaSPassword))
+	}
 
 	// --- Exit codes:
 	// The exit code of your Step is very important. If you return

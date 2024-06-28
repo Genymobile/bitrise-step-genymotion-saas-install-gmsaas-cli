@@ -11,6 +11,7 @@ app:
   # Define these in your .bitrise.secrets.yml
   - GMCLOUD_SAAS_EMAIL: $GMCLOUD_SAAS_EMAIL
   - GMCLOUD_SAAS_PASSWORD: $GMCLOUD_SAAS_PASSWORD
+  - GMCLOUD_SAAS_API_TOKEN: $GMCLOUD_SAAS_API_TOKEN
 
 workflows:
   ci:
@@ -39,7 +40,7 @@ workflows:
         title: Genymotion SaaS - Install gmsaas
         run_if: "true"
         inputs:
-        - gmsaas_version: "1.9.0"
+        - gmsaas_version: "1.11.0"
         - email: $GMCLOUD_SAAS_EMAIL
         - password: $GMCLOUD_SAAS_PASSWORD
     - script:
